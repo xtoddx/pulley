@@ -14,6 +14,7 @@ the current directory, or the file `~/.pulley.yml` in the current user's home
 directory.
 
 An example ~/.pulley.yml:
+
     ---
     :username: xtoddx
     :password: topsecret
