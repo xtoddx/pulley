@@ -67,7 +67,7 @@ module Pulley
       {number: req[:number],
        title: req[:title],
        body: req[:body],
-       branch: req[:head][:label],
+       branch: req[:head][:label].split(':').last,
        author: req[:head][:user] ? req[:head][:user][:login] : nil,
        user: req[:user][:login]}
     end
