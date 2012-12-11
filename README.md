@@ -7,6 +7,9 @@ request with relevant information.
 # Example usage
 `pulley | add-link-to-staging | pulley --publish`
 
+See example scripts at
+[xtoddx/pulley-scripts](https://github.com/xtoddx/pulley-scripts)
+
 # Configuration
 `pulley` can read its credentials through `git config
 github.{username|password|repository}`, a file named `config/pulley.yml` under
