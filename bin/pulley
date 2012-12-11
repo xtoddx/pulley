@@ -6,7 +6,14 @@ credentials = Pulley::Credentials.load
 if credentials.empty?
   abort "Set your credentials.  See README at https://github.com/xtoddx/pulley"
 end
-
 client = Pulley::Github.new(credentials[:username], credentials[:password],
                             credentials[:repository])
-Pulley::CLI.display_pull_requests(client.pull_requests)
+
+if ARGV.delete('--publish')
+  require 'json'
+  text = STDIN.read
+  requests = JSON.parse(text)
+  Pulley::Publisher.new(client).publish_updates(requests)
+else
+  Pulley::CLI.display_pull_requests(client.pull_requests)
+end

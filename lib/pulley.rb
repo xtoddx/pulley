@@ -45,6 +45,10 @@ module Pulley
     def pull_requests
       @connection.pull_requests(@repo)
     end
+
+    def update_pull_request number, title, body
+      @connection.update_pull_request(@repo, number, title, body)
+    end
   end
 
   class CLI
@@ -66,6 +70,19 @@ module Pulley
        branch: req[:head][:label],
        author: req[:head][:user] ? req[:head][:user][:login] : nil,
        user: req[:user][:login]}
+    end
+  end
+
+  class Publisher
+    def initialize client
+      @client = client
+    end
+
+    def publish_updates reqs
+      reqs.each do |req|
+        next unless req['modified']
+        @client.update_pull_request(req['number'], req['title'], req['body'])
+      end
     end
   end
 
