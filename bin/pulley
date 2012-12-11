@@ -4,9 +4,9 @@ require 'pulley'
 
 credentials = Pulley::Credentials.load
 if credentials.empty?
-  exit "Set your credentials.  See README at https://github.com/xtoddx/pulley"
+  abort "Set your credentials.  See README at https://github.com/xtoddx/pulley"
 end
 
-client = Pulley::Github.connect(credentials.username, credentials.password,
-                                credentials.repository)
+client = Pulley::Github.new(credentials[:username], credentials[:password],
+                            credentials[:repository])
 Pulley::CLI.display_pull_requests(client.pull_requests)

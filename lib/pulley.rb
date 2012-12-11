@@ -5,30 +5,30 @@ require 'octokit'
 module Pulley
   class Credentials
     # Find credentials in current repo or global config
-    def load
+    def self.load
       load_from_repo || load_from_local_config || load_from_user_config || {}
     end
 
     private
 
-    def load_from_repo
+    def self.load_from_repo
       user = `git config github.username`.strip
-      password = `git config gitnub.password`.strip
-      repo = `git config github.repo`.strip
+      password = `git config github.password`.strip
+      repo = `git config github.repository`.strip
       if !user.empty? and !password.empty? and !repo.empty?
         {username: user, password: password, repository: repo}
       end
     end
 
-    def load_from_local_config
+    def self.load_from_local_config
       read_from_file('config/pulley.yml')
     end
 
-    def load_from_user_config
+    def self.load_from_user_config
       read_from_file(File.expand_path('~/.pulley.yml'))
     end
 
-    def read_from_file filename
+    def self.read_from_file filename
       if File.exist?(filename)
         YAML.load(File.read(filename))
       end
@@ -36,9 +36,9 @@ module Pulley
   end
 
   class Github
-    def connect username, password, repo
+    def initialize username, password, repo
       @repo = repo
-      @connection = Ocotkit::Client.new(login: username, password: password,
+      @connection = Octokit::Client.new(login: username, password: password,
                                         auto_traversal: true)
     end
 
@@ -48,23 +48,23 @@ module Pulley
   end
 
   class CLI
-    def display_all_pull_requests reqs
+    def self.display_pull_requests reqs
       decorated_reqs = reqs.map{|r| decorate_pull_request(r) }
       puts decorated_reqs.to_json
     end
 
     private
 
-    def decorate_pull_request req
+    def self.decorate_pull_request req
       relevant_fields(req)
     end
 
-    def relevant_fields req
+    def self.relevant_fields req
       {number: req[:number],
        title: req[:title],
        body: req[:body],
        branch: req[:head][:label],
-       author: req[:head][:user][:login],
+       author: req[:head][:user] ? req[:head][:user][:login] : nil,
        user: req[:user][:login]}
     end
   end
