@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'pulley'
-  s.version = '0.0.3'
+  s.version = '0.0.4'
   s.date = '2012-12-11'
 
   s.summary = 'A CLI tool for working with Github Pull Requests'
