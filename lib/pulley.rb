@@ -2,6 +2,8 @@ require 'ostruct'
 
 require 'octokit'
 
+require 'yaml'
+
 module Pulley
   class Credentials
     # Find credentials in current repo or global config
